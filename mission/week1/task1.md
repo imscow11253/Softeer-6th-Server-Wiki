@@ -4,8 +4,8 @@
 
 ## ✅ 할 일
 - [x] 기존 코드 분석
-- [ ] 자바 버전별 Thread 모델 학습
-- [ ] 자바 Concurrent 패키지 학습
+- [x] 자바 버전별 Thread 모델 학습
+- [x] 자바 Concurrent 패키지 학습
 - [ ] 기존 코드를 Concurrent 패키지로 변경
 - [ ] OOP 만족하면서 기능 요구사항 구현
     - [ ] http://localhost:8080/index.html 로 접속했을 때 src/main/resources/static 디렉토리의 index.html 파일을 읽어 클라이언트에 응답
