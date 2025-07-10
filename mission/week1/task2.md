@@ -3,7 +3,7 @@
 작성자 - 권민혁
 
 ## ✅ 할 일
-- [ ] MIME type 학습
+- [x] MIME type 학습
 - [ ] 브라우저가 html 파일을 로드할 때 resource fetch 방식 학습
 - [ ] 다양한 확장자 지원 기능 구현 
   - [ ] css 
