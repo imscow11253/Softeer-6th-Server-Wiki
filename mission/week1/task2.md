@@ -20,7 +20,8 @@
 
 ## ❓ 의문점 및 트러블 슈팅
 
-- [ ] ... 
+- [x] HTTP response의 header에 content-type을 명시했으나 svg 파일을 로드하지 못홤
+  - A : response header에 content-length를 넣지 않아서 생긴 문제였다. body의 byte 단위 크기를 명시해주니 해결되었다. 
 
 ## 👂 다른 사람은 어떻게 구현? (그룹세션)
 
