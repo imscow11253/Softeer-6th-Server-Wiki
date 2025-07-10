@@ -8,7 +8,7 @@ concurrent는 Thread의 생성과 관리, 동시성 제어를 위한 라이브�
 
 ## Thread 생성 및 Thread pool
 Thread를 생성하기 위한 Runnable, Callable, Executor, Future, CompletableFuture 등이 정의되어 있다. </br>
-week1_Thread.md 파일에 정리했던 클래스, 인터페이스들이 java.utils.concurrent 패키지 안에 존재한다. </br>
+week1_Thread.md 파일에 정리했던 클래스, 인터페이스들이 java.util.concurrent 패키지 안에 존재한다. </br>
 자세한 클래스, 인터페이스 내용은 week1_Thread.md 문서를 참고하자. 
 
 ## Thread 동시성 제어

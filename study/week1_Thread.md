@@ -32,6 +32,10 @@ Runnable/Callable을 등록하기 위한 인터페이스. Executor를 상속 받
 특정 시간, 주기적으로 작업을 수행해야 하는 경우 사용되는 스레드 풀 인터페이스.
 6. Executors (팩토리 클래스) </br>
 필요한 성격에 따른 스레드 풀이 static 구현체로 만들어져 있어서 호출해서 사용하면 된다. 
+   - newFixedThreadPool : thread pool에 생성될 thread 개수를 고정
+   - newSingleThreadExecutor : 스레드 하나, 싱글톤처럼 사용
+   - newCachedThreadPool : max 개수만 지정하고, 유동적으로 thread 생성,삭제
+   - newScheduledThreadPool : 스케줄링된 작업을 실행
 
 ex ) 
 ```java

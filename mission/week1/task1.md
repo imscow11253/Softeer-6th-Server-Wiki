@@ -6,16 +6,20 @@
 - [x] 기존 코드 분석
 - [x] 자바 버전별 Thread 모델 학습
 - [x] 자바 Concurrent 패키지 학습
-- [ ] 기존 코드를 Concurrent 패키지로 변경
+- [x] 기존 코드를 Concurrent 패키지로 변경
 - [ ] OOP 만족하면서 기능 요구사항 구현
-    - [ ] http://localhost:8080/index.html 로 접속했을 때 src/main/resources/static 디렉토리의 index.html 파일을 읽어 클라이언트에 응답
-    - [ ] 서버로 들어오는 HTTP Request의 내용을 읽고 적절하게 파싱해서 로거(log.debug)를 이용해 출력
-        - [ ] '적절하게'를 정의
+  - [x] HTTP request 데이터를 위한 클래스 만들기
+  - [ ] http://localhost:8080/index.html 로 접속했을 때 src/main/resources/static 디렉토리의 index.html 파일을 읽어 클라이언트에 응답
+  - [ ] 서버로 들어오는 HTTP Request의 내용을 읽고 적절하게 파싱해서 로거(log.debug)를 이용해 출력
+      - [ ] '적절하게'를 정의
 
 ## 👨‍💻 미션 중 나의 고민
-- 1️⃣ : 
-- 2️⃣ :
-- 3️⃣ :
+- 1️⃣ : SRP 원칙
+  - WebServer.defineServerPort (서버 포트 결정)
+  - WebServer.waitingClient (서버가 클라이언트 요청 대기)
+- 2️⃣ : Concurrent 패키지 사용
+  - Runnable 직접 생성 후 주입 방식 대신 newCachedThreadPool 클래스 사용
+- 3️⃣ : 
 - ...
 
 ## ❓ 의문점 및 트러블 슈팅
