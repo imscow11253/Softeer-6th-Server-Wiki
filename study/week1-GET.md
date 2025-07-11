@@ -30,3 +30,18 @@ Restful 하다는 url은 자원을 path 두고, method로 행위를 표현하는
 GET 메서드는 CRUD 중 READ를 위한 http method이다. path에 자원을 표시하고, GET 요청을 쓰면 해당 자원을 읽어오고 싶다는 뜻이다. </br>
 이처럼 Restful하게 API를 작성하면 url 만으로도 어떤 작업이 이루어질지 예측할 수 있다. 
 
+## query parameter 추출하기
+Spring에서는 어노테이션을 사용하면 url의 query parameter를 쉽게 추출할 수 있지만, </br>
+우리는 naive한 java로 웹서버를 만들고 있기 때문에 query parameter를 받아오는 방식이 다르다. 
+
+직접 url path에서 parsing 하는 방식을 사용해야 한다. 
+```java
+String path = "naver.com/user?name=kwon&password=min";
+String[] parameters = path.split("\\?")[1].split("&");
+
+Map<String : String> queryParameter = new HashMap<>();
+for(String kvs : parameters){
+        String[] kv = kvs.split("=");
+        queryPrarameter.put(kv[0], kv[1]);
+}
+```

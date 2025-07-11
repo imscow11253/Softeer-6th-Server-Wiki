@@ -3,8 +3,8 @@
 작성자 - 권민혁
 
 ## ✅ 할 일
-- [ ] HTTP GET 메서드 공부
-- [ ] HTTP GET 파라미터 parsing 학습
+- [x] HTTP GET 메서드 공부
+- [x] HTTP GET 파라미터 parsing 학습
 - [ ] 메인 페이지에서 '회원가입' 버튼 클릭 시, 회원가입 폼 표시
 - [ ] '로그인' 클릭 시, 유저 map에 저장
   - [ ] url에서 query string 파싱 
