@@ -39,9 +39,9 @@ Spring에서는 어노테이션을 사용하면 url의 query parameter를 쉽게
 String path = "naver.com/user?name=kwon&password=min";
 String[] parameters = path.split("\\?")[1].split("&");
 
-Map<String : String> queryParameter = new HashMap<>();
-for(String kvs : parameters){
-        String[] kv = kvs.split("=");
-        queryPrarameter.put(kv[0], kv[1]);
+Map<String, String> queryParameter = new HashMap<>();
+for (String kvs : parameters) {
+    String[] kv = kvs.split("=");
+    queryParameter.put(kv[0], kv.length > 1 ? kv[1] : "");
 }
 ```
