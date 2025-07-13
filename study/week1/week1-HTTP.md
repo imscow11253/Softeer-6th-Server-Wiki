@@ -172,7 +172,7 @@ HTTP-version SP status-code SP [ reason-phrase ] CRLF
 ```text
 필드-이름 ":" OWS 필드-값 OWS CRLF
 ```
-OWS는 optional whitespace의 약자로, 공백이 있어도 되고, 없어도 된다는 뜻이다. 사람이 읽기 쉽도록 일반적으로 OWS로는 SP를 사용한다고 한다. 
+OWS는 optional whitespace의 약자로, 공백이 있어도 되고, 없어도 된다는 뜻이다. 사람이 읽기 쉽도록 일반적으로 OWS로는 SP를 사용한다고 한다. 그리고 HTAB도 가능하다. (http 파서에서는 SP와 HTAB만 OWS로 구분해야 한다.)
 필드 이름과 콜론 사이에는 공백을 사용할 수 없다. (만약 허용할 시, 보안 취약점이 될 수 있다. 공백이 있으면 400 error를 반환해야 한다.)
 맨 앞, 맨 뒤에도 공백을 허용하지 않는다. 있으면 파서에 의해 무시된다. 
 
