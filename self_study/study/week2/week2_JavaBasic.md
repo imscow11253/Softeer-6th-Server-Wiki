@@ -170,6 +170,34 @@ Object로 선언하면 되지 않는가? 라는 의문이 들 수 있다.
    - 얘도 인터페이스이다. 구현체로 HashMap과 TreeMap이 들어올 수 있다. 각각 hash function, red-black 이진트리로 구현되어 있다. 그래서 HashMap은 삽입, 삭제, 탐색이 O(1)이다. TreeMap은 CRUD가 log(n)이지만 데이터들이 정렬된다.
    - HashMap 사용시 충돌이 나면 linked-list로 chaining 되다가 특정 임계값 이상으로 충돌이 나면 red-black tree로 chaining이 된다. 
 
+다음은 HashMap에서 충돌의 개수가 임계값을 넘어가면 chaining 방법이 linked-list에서 red-black tree로 바뀌는데, 해당 부분 라이브러리 메소드이다. 
+```java
+/**
+* Replaces all linked nodes in bin at index for given hash unless
+* table is too small, in which case resizes instead.
+*/
+final void treeifyBin(Node<K,V>[] tab, int hash) {
+  int n, index; Node<K,V> e;
+  if (tab == null || (n = tab.length) < MIN_TREEIFY_CAPACITY)
+      resize();
+  else if ((e = tab[index = (n - 1) & hash]) != null) {
+      TreeNode<K,V> hd = null, tl = null;
+      do {
+          TreeNode<K,V> p = replacementTreeNode(e, null);
+          if (tl == null)
+              hd = p;
+          else {
+              p.prev = tl;
+              tl.next = p;
+          }
+          tl = p;
+      } while ((e = e.next) != null);
+      if ((tab[index] = hd) != null)
+          hd.treeify(tab);
+  }
+}
+```
+
 ## 2-3. 대량의 데이터를 다룰 때, Map, Set, List, Array 중에서 검색 속도가 가장 빠른 것은 무엇이고 이유를 설명
 
 HashMap이나 HashSet은 데이터가 대용량이라면 충돌이 많이 일어날 수 있다고 생각했다.
