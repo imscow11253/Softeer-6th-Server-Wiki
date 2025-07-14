@@ -3,8 +3,8 @@
 ## 1-1. char와 String의 메모리 사용 차이
 
 char는 primitive 자료형이다. String은 객체다. 
-char는 jvm의 스택영역을 사용하고, 문자 값이 직접 거기에 저장된다. 
-String은 문자값이 컨스턴스 풀 영역에 저장되고, String 객체는 heap 영역에 생성되며, 할당받은 상수값의 컨스턴트 풀 영역 주소를 할당받게 된다. 
+char는 jvm의 스택영역을 사용하고, 문자 값이 직접 거기에 저장된다. 만약 특정 객체의 필드 값이면 heap에 생성될 수도 있다. 
+String에 문자열을 바로 넣으면 컨스턴트 풀 영역에 String 객체가 생성되고, new 키워드로 선언하면 String 객체는 heap 영역에 생성된다.
 
 ```java
 public class Main {
@@ -19,16 +19,30 @@ public class Main {
 | ch        | 스택             |지역변수, 2byte 값(‘A’) 자체가 스택에 저장 |
 | "Hello"   | 메서드 영역(컨스턴트 풀) |상수풀(constant pool)에 저장|
 | str 참조 변수 | 스택             |str 변수(주소값)가 스택에 저장|
-| String 객체 | 힙              |리터럴 사용 시 메서드 영역, new로 만들면 힙에|
+| String 객체 | 컨스턴트 풀 / 힙     |리터럴 사용 시 메서드 영역, new로 만들면 힙에|
 
 ```java
 String str = "apple"; //컨스턴트 풀 영역에 String 객체 생성
-String str2 = new String("banana"); //컨스턴트 풀 영역에 banana 생성, 힙에 String 객체 생기고 banana 참조, str2는 힙의 String 객체 참조
+String str2 = new String("banana"); // 힙에 String 객체와 banana 생성, str2는 힙의 String 객체 참조
 String str3 = str2; //str3는 힙 영역의 String 객체를 참조
 ```
 
 String Constact Pool에서 String은 Hash 기반으로 관리된다. 
 
+```java
+ @Test
+ @DisplayName("같은 문자열의 해시코드 비교 ")
+ public void compareStringHashCode() {
+     String abc1 = "abc";
+     String abc2 = new String("abc");
+     // TODO 1 변수에 정의한 문자열과 new 를 통해 생성한 인스턴스가 같은 주소를 가리키는지 비교
+     assertThat(abc1).isEqualTo(abc2);
+     assertThat(abc1 == abc2).isFalse();
+ }
+```
+이 테스트는 통과한다. Why?
+isEqualTo는 내부적으로 메모리 주소를 비교하는 것이 아니라 string 값을 찾아서 값끼리 비교하도록 구현되어 있기 때문이다. 
+근데 변수값 자체를 == 키워드로 비교하면 false가 나는 것이다. 
 
 ## 1-2. String 객체가 immutable인 이유와 장단점
 String이 불변이다? 무슨 말일까? 
@@ -114,6 +128,19 @@ String c = a + b; // "helloworld"
 concat이랑 `+` 연산을 사용하는 것은 새로운 객체를 생성하기 때문에 효율적이지 못하다고 할 수 있다. 
 StringBuilder를 사용하도록 하자.
 
+추가적으로 다음과 같은 방법도 존재한다. 
+```java
+// 4. join
+String s4 = String.join(", ", "A", "B", "C");
+
+// 5. String.format
+String s5 = String.format("Score: %d", 100);
+
+// 6. Stream.joining
+List<String> list = List.of("A", "B", "C");
+String s6 = list.stream().collect(Collectors.joining("-"));
+```
+
 ## 1-4. StringBuilder와 StringBuffer의 차이
 StringBuilder와 StringBuffer는 둘 다 내부적으로 String 연산을 위한 Buffer를 가진다. 
 차이는 Builder의 경우에 문자열 파싱 능력이 뛰어나고, Buffer는 멀티 스레드에서 안전하다는 점이 다르다. 
@@ -132,14 +159,45 @@ Object로 선언하면 되지 않는가? 라는 의문이 들 수 있다.
 - Object로 선언하면 다운 캐스팅 해줘야 하니까 어쨌든 type을 알아야 한다. 
 
 ## 2-2. Map, Set, List, Array는 각각 어떤 특징을 가지고 있나요? (예: 중복 데이터 허용 여부, 순서보장, 키-값 쌍 저장 등의 관점)
-- 각각 다 Interface이다. 
+- 각각 다 Interface이다. (Array 빼고)
+1. List 
+   - List는 ArrayList와 LinkedList 2가지로 나뉜다. 차이는 자료구조에서 배웠듯이 일반 배열과 linked-list와 같다. 
+2. Array
+   - 이건 그냥 naive한 배열이다. [] 키워드로 선언하는 것이다. 
+3. Set
+   - 얘도 인터페이스이다. 구현체로 HashSet과 TreeSet이 들어올 수 있다. 각각 hash function, red-black 이진트리로 구현되어 있다. 그래서 HashSet은 삽입, 삭제, 탐색이 O(1)이다. TreeSet은 CRUD가 log(n)이지만 데이터들이 정렬된다. 
+4. Map
+   - 얘도 인터페이스이다. 구현체로 HashMap과 TreeMap이 들어올 수 있다. 각각 hash function, red-black 이진트리로 구현되어 있다. 그래서 HashMap은 삽입, 삭제, 탐색이 O(1)이다. TreeMap은 CRUD가 log(n)이지만 데이터들이 정렬된다.
+   - HashMap 사용시 충돌이 나면 linked-list로 chaining 되다가 특정 임계값 이상으로 충돌이 나면 red-black tree로 chaining이 된다. 
 
 ## 2-3. 대량의 데이터를 다룰 때, Map, Set, List, Array 중에서 검색 속도가 가장 빠른 것은 무엇이고 이유를 설명
 
-## 3-1. Exception 계층 구조와 분류
-- checked Exception과 unchecked Exception의 차이점
-- Error와 Exception의 차이점
+HashMap이나 HashSet은 데이터가 대용량이라면 충돌이 많이 일어날 수 있다고 생각했다.
+충돌의 정도에 따라 Hash 구조를 사용하든가 아니면, 정렬된 Tree 구조를 사용하는 것이 좋다고 생각했다. 
+List에서 정렬된 구조를 사용하고 이진탐색을 사용할 수도 있을 것 같다. 
 
-## 3-2. 언제 사요아 정의 예외(Custom Exception)를 만들어야 하는가? (적절한 예시)
+HashMap이나 HashSet이 가장 효율적일 것 같다. 
+충돌이 많이 일어나도 경우에 따라서 chaining을 linked-list에서 red-black 트리로 관리한다고 한다. 
+
+## 3-1. Exception 계층 구조와 분류
+- checked Exception과 unchecked Exception의 차이점 
+  - 컴파일 타임에 잡히는 예외인지 아닌지에 따라 잡히면 checked, 안잡히면 unchecked이다. 대표적으로 각각 illegalArgumentException 과 NullpointerException이 있다. 
+- Error와 Exception의 차이점
+  - 복구가 가능하냐 불가능하냐의 차이이다. overflow 처럼 복구가 불가능하면 Error이고(시스템이 종료될 수준), try-catch로 잡히면 exception이다. 
+
+## 3-2. 언제 사용자 정의 예외(Custom Exception)를 만들어야 하는가? (적절한 예시)
+exception 별로 다르게 처리해주고 싶을 때 사용한다. 
+exception이 어디서 발생했는지 판단하기 위해서 사용할 수도 있다.
+UserException.
+혹은 300/400/500 status code
 
 ## 3-3. 예외를 catch해서 처리하는 것 vs throws를 사용해서 상위 메소드로 전파하는 것
+SRP에 따라 정하면 될 것 같다. 예외를 무조건 상위 메소드로 던지는 건 책임 전가이다. 
+자신이 맡은 비즈니스 로직에서 처리하는 것이 맞다고 생각하는 예외에 대해서는 try-catch로 잡는 것이 바람직하다고 생각한다. 
+
+## Tip 
+자바 문서는 다음과 같이 검색하면 된다. 
+```text
+java8 javadoc
+java17 javadoc
+```
