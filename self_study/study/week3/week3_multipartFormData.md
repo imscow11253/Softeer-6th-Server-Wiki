@@ -15,6 +15,11 @@ https://datatracker.ietf.org/doc/html/rfc2046#section-5.1
 
 ### boundary 
 CRLF, "--", "boundary" 파라미터로 구성된다. boundary 파라미터는 header의 content-type에서 랜덤 문자열로 다음처럼 주어진다. 
+
+보통은 라이브러리나 브라우저가 자동으로 생성해준다. 근데 직접 생성해야 할 때는 본문의 내용과 겹치지 않도록 unique한 값을 설정해야 한다. 
+
+각 part의 시작은 `--[boundary]` 이렇게 시작하고 body가 끝나면 `--[boundary]--` 로 끝낸다.
+
 ```text
 Content-Type: multipart/form-data; boundary=----WebKitFormBoundarybtO3GPNA8vu5pv3B
 ```
